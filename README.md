@@ -1,26 +1,57 @@
-Improved Training of Wasserstein GANs
-=====================================
+# gan_practice
+simple dcgan,wgan and improved wgan implementation by tensorflow, this is for practice purpose. tensorflow version=1.1.0
 
-Code for reproducing experiments in ["Improved Training of Wasserstein GANs"](https://arxiv.org/abs/1704.00028).
+# data preparation
+download MNIST data from http://yann.lecun.com/exdb/mnist/ and unzip data to some dir,for example
+```sh
+data
+|__ 10k-images-idx3-ubyte
+|__ train-images-idx3-ubyte
+```
+
+# training
+```sh
+python dcgan.py or wgan.py or wgan_gp.py \
+                --data_path=data \
+                --mode=train \
+                --model_dir=models \
+                --batch_size=100 \
+                --epoch_num=100 \
+                --rand_dim=128
+```
+
+# generating
+```sh
+python dcgan.py or wgan.py or wgan_gp.py \
+                --data_path=data \
+                --mode=infer \
+                --model_dir=models \
+                --batch_size=100 \
+                --epoch_num=100 \
+                --rand_dim=128
+```
+
+# some results
+* dcgan 100 epoch results
+<p align="center">
+<img src="assets/dcgan_results.jpg" width="320"/>
+</p>
+* wgan 100 epoch results
+<p align="center">
+<img src="assets/wgan_results.jpg" width="320"/>
+</p>
+* improved wgan 100 epoch results
+<p align="center">
+<img src="assets/wgangp_results.jpg" width="320"/>
+</p>
+
+# reference
+* Generative Adversarial Nets
+* Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks
+* Wasserstein GAN
+* Improved Training of Wasserstein GANs
+* https://github.com/carpedm20/DCGAN-tensorflow
+* https://github.com/shekkizh/WassersteinGAN.tensorflow
+* https://github.com/igul222/improved_wgan_training
 
 
-## Prerequisites
-
-- Python, NumPy, TensorFlow, SciPy, Matplotlib
-- A recent NVIDIA GPU
-
-## Models
-
-Configuration for all models is specified in a list of constants at the top of
-the file. Two models should work "out of the box":
-
-- `python gan_toy.py`: Toy datasets (8 Gaussians, 25 Gaussians, Swiss Roll). 
-- `python gan_mnist.py`: MNIST
-
-For the other models, edit the file to specify the path to the dataset in
-`DATA_DIR` before running. Each model's dataset is publicly available; the
-download URL is in the file.
-
-- `python gan_64x64.py`: 64x64 architectures (this code trains on ImageNet instead of LSUN bedrooms in the paper)
-- `python gan_language.py`: Character-level language model
-- `python gan_cifar.py`: CIFAR-10
