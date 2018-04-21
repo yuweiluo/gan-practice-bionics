@@ -103,8 +103,9 @@ def train(args):
     real_result = discriminator(real_image, is_train)
     fake_result = discriminator(fake_image, is_train, reuse=True)
     # wgan-gp loss is same as wgan loss
-    d_loss = tf.reduce_mean(real_result - fake_result)  # This optimizes the discriminator.
-    g_loss = tf.reduce_mean(fake_result)  # This optimizes the generator.
+    #yuwei
+    d_loss = -tf.reduce_mean(real_result - fake_result)  # This optimizes the discriminator.
+    g_loss = -tf.reduce_mean(fake_result)  # This optimizes the generator.
     # wgan-gp gradient panelty
     differences = fake_image - real_image
     interpolates = real_image + tf.multiply(alpha, differences)
@@ -123,8 +124,18 @@ def train(args):
     epoch_num = args.epoch_num
     batch_size = args.batch_size
     batch_num = int(mnist_data.get_train_num() / batch_size)
-    sess = tf.Session()
+    
+    #yuwei
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(0)
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 0.7
+
+    sess = tf.Session(config=config)
     saver = tf.train.Saver()
+    
+
+    
+    
     sess.run(tf.global_variables_initializer())
     print ('total training sample num:%d' % mnist_data.get_train_num())
     print ('batch size: %d, batch num per epoch: %d, epoch num: %d' % (batch_size, batch_num, epoch_num))
